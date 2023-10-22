@@ -1,34 +1,71 @@
+
+
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////
 ////////////////// FAÇA O SEU CÓDIGO AQUI \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ////////////////////////////////////////////////////////////////////////
 
+var arrayAlunos = []
+
 class Aluno {
-  
+	Nome
+	Idade 
+	Nota
+	constructor(nome, idade, nota){
+		this.Nome = nome
+		this.Idade = idade
+		this.Nota = parseInt(nota)
+	}
 }
+
 
 // Array
 
 
 //funções projeto
 
-function CadastrarAluno() {
-  
+function CadastrarAluno(nome, idade, nota, array) {
+	let objetoAluno = new Aluno(nome, idade, nota)
+	if (!array.some(x=> (x.Nome == nome))) {
+		array.push(objetoAluno)
+		console.log('cadastrou:', array)
+	}
+	return objetoAluno	
 }
 
-function OrdenarPorNota() {
- 
+function OrdenarPorNota(array) {
+	array.sort( (a, b) => {
+		return a.Nota - b.Nota
+	})
+	console.log("aquii", array)
+	return array
 }
 
-function OrdenarPorIdade() {
-
+function OrdenarPorIdade(array) {
+	array.sort( (a, b) => {
+		return a.Idade - b.Idade
+	})
+	return array
 }
 
-function OrdenarPorNome() {
-
+function OrdenarPorNome(arrayAlunos) {
+	let arrayOrdenado = arrayAlunos.sort( (a, b)=> {return a.Nome.localeCompare(b.Nome)})
+	return arrayOrdenado
 }
 
-function CalcularMedia(){
-
+function CalcularMedia(arrayAlunos){
+	let somaTotal = 0
+	arrayAlunos.forEach(element => {
+		somaTotal += element.Nota
+	});
+	console.log(somaTotal, (somaTotal, arrayAlunos.length))
+	return (somaTotal / arrayAlunos.length)
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -139,36 +176,38 @@ const getBuscarAluno = (busca) => {
 
 
 const filterAlunos = (filterValue) => {
-  const alunos = document.querySelectorAll(".aluno");
+	const alunos = document.querySelectorAll(".aluno");
+	switch (filterValue) {
+		case "nota":
+		alunos.forEach((aluno) => {
+			console.log("remove", aluno)
+			aluno.remove()
+		})
+		arrayAlunos = OrdenarPorNota(arrayAlunos)
+		console.log('nao vme certo??', arrayAlunos)
+		arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+		break;
 
-  switch (filterValue) {
-    case "nota":
-      alunos.forEach((aluno) => {
-        aluno.remove()
-      })
-      arrayAlunos = OrdenarPorNota(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
-      break;
+		case "idade":
+		alunos.forEach((aluno) => {
+			aluno.remove()
+		})
+		console.log(arrayAlunos, 'array dos alunos')
+		arrayAlunos = OrdenarPorIdade(arrayAlunos)
+		arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+		break;
 
-    case "idade":
-      alunos.forEach((aluno) => {
-        aluno.remove()
-      })
-      arrayAlunos = OrdenarPorIdade(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
-      break;
+		case "nome":
+		alunos.forEach((aluno) => {
+			aluno.remove()
+		})
+		arrayAlunos = OrdenarPorNome(arrayAlunos)
+		arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
+		break;
 
-    case "nome":
-      alunos.forEach((aluno) => {
-        aluno.remove()
-      })
-      arrayAlunos = OrdenarPorNome(arrayAlunos)
-      arrayAlunos.forEach((aluno) => saveAluno(aluno.Nome, aluno.Idade, aluno.Nota, done = 0, save = 1))
-      break;
-
-    default:
-      break;
-  }
+		default:
+		break;
+	}
 };
 
 // Eventos
